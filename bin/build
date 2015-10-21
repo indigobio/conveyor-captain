@@ -87,7 +87,8 @@ pull() {
 
 build() {
   status "Building..."
-  captain build 
+  #CIRCLECI=true is a hack to workaround a bug in captain at the moment. 
+  CIRCLECI=true captain build 
   status "Testing..."
   captain test
 }
