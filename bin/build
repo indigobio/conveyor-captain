@@ -70,7 +70,7 @@ setup() {
 clone() {
   status "Cloning..."
   # Clone the given branch and checkout the sha.
-  git clone --depth 50 --branch="$BRANCH" "git@github.com:${REPOSITORY}.git" "$REPOSITORY"
+  git clone --depth 1 --branch="$BRANCH" "git@github.com:${REPOSITORY}.git" "$REPOSITORY"
   cd "$REPOSITORY"
   git checkout -qf "$SHA"
 }

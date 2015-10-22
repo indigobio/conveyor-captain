@@ -1,0 +1,3 @@
+conveyor-captain:
+   build: Dockerfile
+   image: indigobio/conveyor-captain
