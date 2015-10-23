@@ -119,5 +119,5 @@ run() {
 }
 
 trap teardown 0
-
+export squasher
 run
