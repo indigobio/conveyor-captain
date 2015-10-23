@@ -103,10 +103,9 @@ squasher()
 
 push() {
   if [ -z "$DRY" ]; then
-    export squasher;
     export BRANCH;
     export SHA;
-    cat captain.yml | grep image | awk '{print $2}' | xargs -L 1 -I name bash -c 'squasher name $BRANCH $SHA'
+    cat captain.yml | grep image | awk '{print $2}' | xargs -L 1 -I name sh -c 'squasher name $BRANCH $SHA'
     retry 3 captain push
   else
     status "Dry run enabled. Not pushing."
