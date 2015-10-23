@@ -97,11 +97,12 @@ squasher()
 { 
     echo "Squashing images..."
     img=$1;
-    docker save $img | sudo docker-squash -t $img:latest | docker load;
-    docker tag -f $img:latest $img:$BRANCH && docker tag -f $img:latest $img:$SHA
+    docker save $img | docker-squash -t $img:latest -verbose | docker load;
+    docker tag -f $img:latest $img:$BRANCH 
+    docker tag -f $img:latest $img:$SHA
     echo "Pushing squashed images..."
-    retry 3 docker push $img:latest
-    retry 3 && docker push $img:$BRANCH
+    docker push $img:latest
+    docker push $img:$BRANCH
 }
 
 push() {
