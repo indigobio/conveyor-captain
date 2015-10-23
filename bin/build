@@ -93,7 +93,7 @@ build() {
   captain test
 }
 
-squasher ()
+squasher()
 {
     img=$1;
     docker save $img | docker-squash -t $img:latest | docker load;
@@ -103,6 +103,7 @@ squasher ()
 
 push() {
   if [ -z "$DRY" ]; then
+    export squasher;
     export BRANCH;
     export SHA;
     cat captain.yml | grep image | awk '{print $2}' | xargs -L 1 -I name bash -c 'squasher name $BRANCH $SHA'
