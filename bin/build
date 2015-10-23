@@ -98,11 +98,7 @@ squasher()
     set -e
     img=$1;
     echo 'Exporting image..'
-    docker save $img > image.tar
-    echo "Squashing image..."
-    sudo docker-squash -i image.tar -t $img:latest -verbose  -o squashed.tar
-    echo "Importing squashed image..." 
-    cat squashed.tar | docker load;
+    docker-scripts squash $img -f $img:latest -t $img:latest
     docker tag -f $img:latest $img:$BRANCH 
     docker tag -f $img:latest $img:$SHA
     echo "Pushing squashed images..."
