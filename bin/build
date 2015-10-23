@@ -79,7 +79,7 @@ pull() {
   if [ "$CACHE" = "on" ]; then
     status "Pulling..."
     # Attempt to pull the last build image for this branch.
-    docker pull "$REPOSITORY:$BRANCH" || docker pull "$REPOSITORY:master" || docker pull "$REPOSITORY:latest" || true
+   captain pull 
   else
     status "Cache disabled. Not pulling."
   fi
