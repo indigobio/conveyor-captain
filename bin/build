@@ -103,7 +103,6 @@ squasher ()
 
 push() {
   if [ -z "$DRY" ]; then
-    export -f squasher
     export BRANCH;
     export SHA;
     cat captain.yml | grep image | awk '{print $2}' | xargs -L 1 -I name bash -c 'squasher name $BRANCH $SHA'
