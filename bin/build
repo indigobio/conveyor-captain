@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Fail fast.
 set -e
@@ -70,7 +70,7 @@ setup() {
 clone() {
   status "Cloning..."
   # Clone the given branch and checkout the sha.
-  git clone --depth 1 --branch="$BRANCH" "git@github.com:${REPOSITORY}.git" "$REPOSITORY"
+  git clone --depth 5 --branch="$BRANCH" "git@github.com:${REPOSITORY}.git" "$REPOSITORY"
   cd "$REPOSITORY"
   git checkout -qf "$SHA"
 }
@@ -79,7 +79,7 @@ pull() {
   if [ "$CACHE" = "on" ]; then
     status "Pulling..."
     # Attempt to pull the last build image for this branch.
-   captain pull 
+    captain pull 
   else
     status "Cache disabled. Not pulling."
   fi
@@ -88,29 +88,13 @@ pull() {
 build() {
   status "Building..."
   #CIRCLECI=true is a hack to workaround a bug in captain at the moment. 
-  CIRCLECI=true captain build 
-  status "Testing..."
-  captain test
+  CIRCLECI=true captain test
 }
 
-squasher()
-{ 
-    set -e
-    img=$1;
-    echo 'Exporting image..'
-    docker-scripts squash $img -f $img:latest -t $img:latest
-    docker tag -f $img:latest $img:$BRANCH 
-    docker tag -f $img:latest $img:$SHA
-    echo "Pushing squashed images..."
-    docker push $img:latest
-    docker push $img:$BRANCH
-}
 
 push() {
   if [ -z "$DRY" ]; then
-    export BRANCH;
-    export SHA;
-    cat captain.yml | grep image | awk '{print $2}' | xargs -L 1 -I name bash -c 'squasher name $BRANCH $SHA'
+   captain push
   else
     status "Dry run enabled. Not pushing."
   fi
@@ -122,5 +106,4 @@ run() {
 }
 
 trap teardown 0
-export -f squasher
 run
